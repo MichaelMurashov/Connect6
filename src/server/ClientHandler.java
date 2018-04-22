@@ -22,6 +22,7 @@ public class ClientHandler implements Runnable {
             this.server = server;
             this.clientSocket = socket;
             this.outMessage = new PrintWriter(socket.getOutputStream());
+            this.inMessage = new Scanner(socket.getInputStream());
         }
         catch (IOException ex) {
             ex.printStackTrace();
@@ -32,21 +33,15 @@ public class ClientHandler implements Runnable {
     public void run() {
         try {
             while (true) {
-                server.sendMessageToAllClients("Новый игрок присоединился!");
-                server.sendMessageToAllClients("Игроков в игре: " + clients_count);
-                break;
-            }
-
-            while (true) {
                 if (inMessage.hasNext()) {
                     String clientMessage = inMessage.nextLine();
-                    if (clientMessage.equalsIgnoreCase("##session##end##"))
-                        break;
+//                    if (clientMessage.equalsIgnoreCase("##session##end##"))
+//                        break;
 
-                System.out.println(clientMessage);
-                server.sendMessageToAllClients(clientMessage);
+                    System.out.println(clientMessage);
+                    server.sendMessageToAllClients(clientMessage);
             }
-            Thread.sleep(100);
+                Thread.sleep(100);
             }
         }
         catch (InterruptedException ex) {

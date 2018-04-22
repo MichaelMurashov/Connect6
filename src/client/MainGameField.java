@@ -1,3 +1,5 @@
+package client;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -69,7 +71,7 @@ public class MainGameField extends JPanel {
 
         if (player1.win()) {
             gameOver = true;
-            gameOverMessage = "Player 1 WIN!!!";
+            gameOverMessage = "client.Player 1 WIN!!!";
         }
 
         repaint();
@@ -88,7 +90,7 @@ public class MainGameField extends JPanel {
 
         if (player2.win()) {
             gameOver = true;
-            gameOverMessage = "Player 2 WIN!!!";
+            gameOverMessage = "client.Player 2 WIN!!!";
         }
 
         repaint();

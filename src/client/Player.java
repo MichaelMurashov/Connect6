@@ -1,3 +1,5 @@
+package client;
+
 public class Player{
     String sign;
     MainGameField gameField;

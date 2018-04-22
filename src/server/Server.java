@@ -22,7 +22,12 @@ public class Server {
                 ClientHandler client = new ClientHandler(clientSocket, this);
                 clients.add(client);
 
-                new Thread(client).start();
+                if (clients.size() == 2) {
+                    new Thread(clients.get(0)).start();
+                    new Thread(clients.get(1)).start();
+
+                    this.sendMessageToAllClients("start game");
+                }
             }
         }
         catch (IOException ex){
