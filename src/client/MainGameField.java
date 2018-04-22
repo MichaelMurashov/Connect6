@@ -9,13 +9,20 @@ public class MainGameField extends JPanel {
     private static MainGameField instance = null;
     private static final int FIELD_SIZE = 456;
     private final String NOT_SIGN = "*";
+
     private boolean gameOver = false;
     private String gameOverMessage = "";
+
     private static int linesCount = 19;
     private static int countToWin = 5;
+
     private int cellSize;
     private int x, y;
-    private Player player1, player2;
+    public void setXY (int _x, int _y) { x = _x; y = _y; }
+
+    private int myPlayerNum;
+    public void setPlayerNum(int num) { myPlayerNum = num; }
+    private Player[] players = new Player[2];
     public String[][] cell;
 
     public static synchronized MainGameField getInstance() {
@@ -40,9 +47,9 @@ public class MainGameField extends JPanel {
 
     private MainGameField() {
         setVisible(false);
-        player1 = new Player("X");
-        player2 = new Player("O");
-        player1.isShotReady = 1;
+        players[0] = new Player("X");
+        players[1] = new Player("O");
+        players[0].isShotReady = 1;
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -50,8 +57,8 @@ public class MainGameField extends JPanel {
                 super.mouseClicked(e);
                 x = e.getX() / cellSize;
                 y = e.getY() / cellSize;
-                if (!gameOver)
-                    game();
+
+                MainForm.sendMsg(Integer.toString(x) + "/" + Integer.toString(y) + "/" + myPlayerNum);
             }
         });
     }
@@ -60,45 +67,31 @@ public class MainGameField extends JPanel {
         return cell[x][y].equals(NOT_SIGN);
     }
 
-    private void game() {
-        if (player1.isShotReady > 0 & player2.isShotReady == 0)
+    public void game(int playerNum) {
+        int anotherPlayerNum = 2;
+        switch (playerNum) {
+            case 0:
+                anotherPlayerNum = 1;
+                break;
+            case 1:
+                anotherPlayerNum = 0;
+                break;
+        }
+
+        if (players[playerNum].isShotReady > 0 & players[anotherPlayerNum].isShotReady == 0)
             if (spotIsEmpty(x, y)) {
-                player1.shot(x,y);
-                player1.isShotReady--;
-                if (player1.isShotReady == 0)
-                    player2.isShotReady = 2;
+                players[playerNum].shot(x, y);
+                players[playerNum].isShotReady--;
+                if (players[playerNum].isShotReady == 0)
+                    players[anotherPlayerNum].isShotReady = 2;
             }
 
-        if (player1.win()) {
+        if (players[playerNum].win()) {
             gameOver = true;
-            gameOverMessage = "client.Player 1 WIN!!!";
+            gameOverMessage = "Player " + (playerNum + 1) + " WIN!";
         }
 
         repaint();
-
-        if (player2.isShotReady > 0 & player1.isShotReady == 0)
-            if (spotIsEmpty(x, y)) {
-                player2.shot(x,y);
-                player2.isShotReady--;
-                if (player2.isShotReady == 0)
-                    player1.isShotReady = 2;
-            }
-
-//        if (!gameOver) {
-//            player2.shot(x, y);
-//        }
-
-        if (player2.win()) {
-            gameOver = true;
-            gameOverMessage = "client.Player 2 WIN!!!";
-        }
-
-        repaint();
-
-        if (isFieldFull() && !player2.win() && !player1.win()) {
-            gameOver = true;
-            gameOverMessage = "Draw!";
-        }
     }
 
     boolean isCellBusy(int x, int y) {
@@ -106,16 +99,6 @@ public class MainGameField extends JPanel {
             return false;
         }
         return !cell[x][y].equals(NOT_SIGN);
-    }
-
-    private boolean isFieldFull() {
-        for (int i = 0; i < linesCount; i++) {
-            for (int j = 0; j < linesCount; j++) {
-                if (cell[i][j].equals(NOT_SIGN))
-                    return false;
-            }
-        }
-        return true;
     }
 
     private boolean checkLine(int start_x, int start_y, int dx, int dy, String sign) {

@@ -24,7 +24,9 @@ public class Server {
 
                 if (clients.size() == 2) {
                     new Thread(clients.get(0)).start();
+                    clients.get(0).sendMsg("player 1");
                     new Thread(clients.get(1)).start();
+                    clients.get(1).sendMsg("player 2");
 
                     this.sendMessageToAllClients("start game");
                 }

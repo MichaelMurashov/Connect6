@@ -2,8 +2,6 @@ package client;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -13,9 +11,11 @@ public class MainForm extends JFrame {
     private static final String SERVER_HOST = "localhost";
     private static final int SERVER_PORT = 3443;
 
-    private Socket clientSocket;
-    private Scanner inMessage;
-    private PrintWriter outMessage;
+    private static Socket clientSocket;
+    private static Scanner inMessage;
+    private static PrintWriter outMessage;
+
+    private String delimeter = "/";
 
     public MainForm() {
         try {
@@ -42,10 +42,25 @@ public class MainForm extends JFrame {
                     while (true) {
                         if (inMessage.hasNext()) {
                             String inMsg = inMessage.nextLine();
-                            if (inMsg.equals("start game")) {
-                                gameField.startNewGame();
-                            } else {
-                                System.out.println(inMsg);
+                            switch (inMsg) {
+                                case "player 1":
+                                    gameField.setPlayerNum(0);
+                                    break;
+
+                                case "player 2":
+                                    gameField.setPlayerNum(1);
+                                    break;
+
+                                case "start game":
+                                    gameField.startNewGame();
+                                    break;
+
+                                default:
+                                    //   x/y/playerNum
+                                    String[] data = inMsg.split(delimeter);
+                                    gameField.setXY(Integer.parseInt(data[0]), Integer.parseInt(data[1]));
+                                    gameField.game(Integer.parseInt(data[2]));
+                                    break;
                             }
                         }
                     }
@@ -57,5 +72,10 @@ public class MainForm extends JFrame {
         }).start();
 
         setVisible(true);
+    }
+
+    public static void sendMsg(String msg) {
+        outMessage.println(msg);
+        outMessage.flush();
     }
 }

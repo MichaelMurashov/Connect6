@@ -35,9 +35,6 @@ public class ClientHandler implements Runnable {
             while (true) {
                 if (inMessage.hasNext()) {
                     String clientMessage = inMessage.nextLine();
-//                    if (clientMessage.equalsIgnoreCase("##session##end##"))
-//                        break;
-
                     System.out.println(clientMessage);
                     server.sendMessageToAllClients(clientMessage);
             }
@@ -65,6 +62,5 @@ public class ClientHandler implements Runnable {
     public void close() {
         server.removeClient(this);
         clients_count--;
-        server.sendMessageToAllClients("Клиентов в игре: " + clients_count);
     }
 }
