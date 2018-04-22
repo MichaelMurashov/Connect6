@@ -15,8 +15,6 @@ public class MainForm extends JFrame {
     private static Scanner inMessage;
     private static PrintWriter outMessage;
 
-    private String delimeter = "/";
-
     public MainForm() {
         try {
             clientSocket = new Socket(SERVER_HOST, SERVER_PORT);
@@ -35,6 +33,11 @@ public class MainForm extends JFrame {
         MainGameField gameField = MainGameField.getInstance();
         add(gameField, BorderLayout.CENTER);
 
+        JPanel panel = new JPanel(new GridLayout());
+        add(panel, BorderLayout.SOUTH);
+        JLabel playerNumber = new JLabel("You are player #");
+        panel.add(playerNumber);
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -45,10 +48,12 @@ public class MainForm extends JFrame {
                             switch (inMsg) {
                                 case "player 1":
                                     gameField.setPlayerNum(0);
+                                    playerNumber.setText("You are player #" + Integer.toString(1));
                                     break;
 
                                 case "player 2":
                                     gameField.setPlayerNum(1);
+                                    playerNumber.setText("You are player #" + Integer.toString(2));
                                     break;
 
                                 case "start game":
@@ -57,7 +62,7 @@ public class MainForm extends JFrame {
 
                                 default:
                                     //   x/y/playerNum
-                                    String[] data = inMsg.split(delimeter);
+                                    String[] data = inMsg.split("/");
                                     gameField.setXY(Integer.parseInt(data[0]), Integer.parseInt(data[1]));
                                     gameField.game(Integer.parseInt(data[2]));
                                     break;

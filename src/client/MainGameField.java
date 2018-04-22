@@ -22,6 +22,7 @@ public class MainGameField extends JPanel {
 
     private int myPlayerNum;
     public void setPlayerNum(int num) { myPlayerNum = num; }
+    public int getPlayerNum() { return myPlayerNum; }
     private Player[] players = new Player[2];
     public String[][] cell;
 
@@ -88,7 +89,7 @@ public class MainGameField extends JPanel {
 
         if (players[playerNum].win()) {
             gameOver = true;
-            gameOverMessage = "Player " + (playerNum + 1) + " WIN!";
+            gameOverMessage = "Player #" + (playerNum + 1) + " WIN!";
         }
 
         repaint();
