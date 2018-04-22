@@ -7,7 +7,7 @@ public class MainForm extends JFrame {
     public MainForm() {
 
         setTitle("Connect6 Game");
-        setBounds(300, 300, 455, 525);
+        setBounds(300, 300, 475, 525);
         setResizable(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
