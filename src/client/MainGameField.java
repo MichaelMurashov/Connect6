@@ -64,6 +64,10 @@ public class MainGameField extends JPanel {
         });
     }
 
+    public int playerIsShotReady() {
+        return players[myPlayerNum].isShotReady;
+    }
+
     private boolean spotIsEmpty(int x, int y) {
         return cell[x][y].equals(NOT_SIGN);
     }

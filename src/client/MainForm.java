@@ -33,10 +33,13 @@ public class MainForm extends JFrame {
         MainGameField gameField = MainGameField.getInstance();
         add(gameField, BorderLayout.CENTER);
 
+
         JPanel panel = new JPanel(new GridLayout());
         add(panel, BorderLayout.SOUTH);
         JLabel playerNumber = new JLabel("You are player #");
+        JLabel whosMove = new JLabel("");
         panel.add(playerNumber);
+        panel.add(whosMove);
 
         new Thread(new Runnable() {
             @Override
@@ -49,11 +52,13 @@ public class MainForm extends JFrame {
                                 case "player 1":
                                     gameField.setPlayerNum(0);
                                     playerNumber.setText("You are player #" + Integer.toString(1));
+                                    whosMove.setText("Your move!");
                                     break;
 
                                 case "player 2":
                                     gameField.setPlayerNum(1);
                                     playerNumber.setText("You are player #" + Integer.toString(2));
+                                    whosMove.setText("Opponent's move");
                                     break;
 
                                 case "start game":
@@ -65,6 +70,16 @@ public class MainForm extends JFrame {
                                     String[] data = inMsg.split("/");
                                     gameField.setXY(Integer.parseInt(data[0]), Integer.parseInt(data[1]));
                                     gameField.game(Integer.parseInt(data[2]));
+
+                                    if (gameField.getPlayerNum() == 0 & gameField.playerIsShotReady() != 0)
+                                        whosMove.setText("Your move!");
+                                    if (gameField.getPlayerNum() == 1 & gameField.playerIsShotReady() == 0)
+                                        whosMove.setText("Opponent's move!");
+
+                                    if (gameField.getPlayerNum() == 1 & gameField.playerIsShotReady() != 0)
+                                        whosMove.setText("Your move!");
+                                    if (gameField.getPlayerNum() == 0 & gameField.playerIsShotReady() == 0)
+                                        whosMove.setText("Opponent's move");
                                     break;
                             }
                         }
