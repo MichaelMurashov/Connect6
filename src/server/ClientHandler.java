@@ -10,17 +10,9 @@ public class ClientHandler implements Runnable {
     private PrintWriter outMessage;
     private Scanner inMessage;
 
-    private static final String HOST = "localhost";
-    private static final int PORT = 3443;
-
-    private Socket clientSocket = null;
-    private static int clients_count = 0;
-
     public ClientHandler(Socket socket, Server server) {
         try {
-            clients_count++;
             this.server = server;
-            this.clientSocket = socket;
             this.outMessage = new PrintWriter(socket.getOutputStream());
             this.inMessage = new Scanner(socket.getInputStream());
         }
@@ -44,9 +36,6 @@ public class ClientHandler implements Runnable {
         catch (InterruptedException ex) {
             ex.printStackTrace();
         }
-        finally {
-            this.close();
-        }
     }
 
     public void sendMsg(String msg) {
@@ -57,10 +46,5 @@ public class ClientHandler implements Runnable {
         catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    public void close() {
-        server.removeClient(this);
-        clients_count--;
     }
 }

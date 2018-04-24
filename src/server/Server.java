@@ -52,8 +52,4 @@ public class Server {
         for (ClientHandler o: clients)
             o.sendMsg(msg);
     }
-
-    public void removeClient(ClientHandler client) {
-        clients.remove(client);
-    }
 }

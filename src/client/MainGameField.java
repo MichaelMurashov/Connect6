@@ -158,13 +158,12 @@ public class MainGameField extends JPanel {
             for (int j = 0; j < linesCount; j++) {
                 if (!cell[i][j].equals(NOT_SIGN)) {
                     if (cell[i][j].equals("X")) {
-                        g.setColor(Color.RED);
-                        g.drawLine((i * cellSize), (j * cellSize), (i + 1) * cellSize, (j + 1) * cellSize);
-                        g.drawLine((i + 1) * cellSize, (j * cellSize), (i * cellSize), (j + 1) * cellSize);
+                        g.setColor(Color.BLACK);
+                        g.fillOval(i * cellSize, j * cellSize, cellSize, cellSize);
                     }
                     if (cell[i][j].equals("O")) {
                         g.setColor(Color.BLUE);
-                        g.drawOval((i * cellSize), (j * cellSize), cellSize, cellSize);
+                        g.fillOval((i * cellSize), (j * cellSize), cellSize, cellSize);
                     }
                 }
             }

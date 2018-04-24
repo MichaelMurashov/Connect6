@@ -1,8 +1,8 @@
 package client;
 
 public class Player{
-    String sign;
-    MainGameField gameField;
+    private String sign;
+    private MainGameField gameField;
     int isShotReady = 0;
 
     public Player(String sign) {
@@ -17,6 +17,8 @@ public class Player{
         }
         return false;
     }
+
+
 
     boolean win() {
         gameField = MainGameField.getInstance();

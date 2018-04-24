@@ -12,6 +12,7 @@ public class MainForm extends JFrame {
     private final MainGameField gameField;
     private final JLabel playerNumber;
     private final JLabel whosMove;
+    private final JLabel waitingPlayer;
 
     public MainForm() {
 
@@ -29,6 +30,10 @@ public class MainForm extends JFrame {
         whosMove = new JLabel("");
         panel.add(playerNumber);
         panel.add(whosMove);
+
+        waitingPlayer = new JLabel("Waiting another player...");
+        panel.add(waitingPlayer);
+
         setVisible(true);
     }
 
@@ -46,6 +51,7 @@ public class MainForm extends JFrame {
 
     public void startGame() {
         gameField.startNewGame();
+        waitingPlayer.setVisible(false);
     }
 
     public void move( int x, int y, int playerNum) {
