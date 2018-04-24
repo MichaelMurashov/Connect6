@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import static client.MainClient.sendMsg;
+
 public class MainGameField extends JPanel {
     private static MainGameField instance = null;
     private static final int FIELD_SIZE = 456;
@@ -14,7 +16,7 @@ public class MainGameField extends JPanel {
     private String gameOverMessage = "";
 
     private static int linesCount = 19;
-    private static int countToWin = 5;
+    private static int countToWin = 6;
 
     private int cellSize;
     private int x, y;
@@ -59,7 +61,7 @@ public class MainGameField extends JPanel {
                 x = e.getX() / cellSize;
                 y = e.getY() / cellSize;
 
-                MainForm.sendMsg(Integer.toString(x) + "/" + Integer.toString(y) + "/" + myPlayerNum);
+                sendMsg(Integer.toString(x) + "/" + Integer.toString(y) + "/" + myPlayerNum);
             }
         });
     }

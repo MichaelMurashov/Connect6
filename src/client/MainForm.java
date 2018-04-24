@@ -8,94 +8,58 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class MainForm extends JFrame {
-    private static final String SERVER_HOST = "localhost";
-    private static final int SERVER_PORT = 3443;
 
-    private static Socket clientSocket;
-    private static Scanner inMessage;
-    private static PrintWriter outMessage;
+    private final MainGameField gameField;
+    private final JLabel playerNumber;
+    private final JLabel whosMove;
 
     public MainForm() {
-        try {
-            clientSocket = new Socket(SERVER_HOST, SERVER_PORT);
-            inMessage = new Scanner(clientSocket.getInputStream());
-            outMessage = new PrintWriter(clientSocket.getOutputStream());
-        }
-        catch (IOException ex) {
-            ex.printStackTrace();
-        }
 
         setTitle("Connect6 Game");
         setBounds(300, 300, 475, 525);
         setResizable(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        MainGameField gameField = MainGameField.getInstance();
+        gameField = MainGameField.getInstance();
         add(gameField, BorderLayout.CENTER);
-
 
         JPanel panel = new JPanel(new GridLayout());
         add(panel, BorderLayout.SOUTH);
-        JLabel playerNumber = new JLabel("You are player #");
-        JLabel whosMove = new JLabel("");
+        playerNumber = new JLabel("You are player #");
+        whosMove = new JLabel("");
         panel.add(playerNumber);
         panel.add(whosMove);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (true) {
-                        if (inMessage.hasNext()) {
-                            String inMsg = inMessage.nextLine();
-                            switch (inMsg) {
-                                case "player 1":
-                                    gameField.setPlayerNum(0);
-                                    playerNumber.setText("You are player #" + Integer.toString(1));
-                                    whosMove.setText("Your move!");
-                                    break;
-
-                                case "player 2":
-                                    gameField.setPlayerNum(1);
-                                    playerNumber.setText("You are player #" + Integer.toString(2));
-                                    whosMove.setText("Opponent's move");
-                                    break;
-
-                                case "start game":
-                                    gameField.startNewGame();
-                                    break;
-
-                                default:
-                                    //   x/y/playerNum
-                                    String[] data = inMsg.split("/");
-                                    gameField.setXY(Integer.parseInt(data[0]), Integer.parseInt(data[1]));
-                                    gameField.game(Integer.parseInt(data[2]));
-
-                                    if (gameField.getPlayerNum() == 0 & gameField.playerIsShotReady() != 0)
-                                        whosMove.setText("Your move!");
-                                    if (gameField.getPlayerNum() == 1 & gameField.playerIsShotReady() == 0)
-                                        whosMove.setText("Opponent's move!");
-
-                                    if (gameField.getPlayerNum() == 1 & gameField.playerIsShotReady() != 0)
-                                        whosMove.setText("Your move!");
-                                    if (gameField.getPlayerNum() == 0 & gameField.playerIsShotReady() == 0)
-                                        whosMove.setText("Opponent's move");
-                                    break;
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }).start();
-
         setVisible(true);
     }
 
-    public static void sendMsg(String msg) {
-        outMessage.println(msg);
-        outMessage.flush();
+    public void setPlayerFirst(boolean first) {
+        if (first) {
+            gameField.setPlayerNum(0);
+            playerNumber.setText("You are player #" + Integer.toString(1));
+            whosMove.setText("Your move!");
+        } else {
+            gameField.setPlayerNum(1);
+            playerNumber.setText("You are player #" + Integer.toString(2));
+            whosMove.setText("Opponent's move");
+        }
+    }
+
+    public void startGame() {
+        gameField.startNewGame();
+    }
+
+    public void move( int x, int y, int playerNum) {
+        gameField.setXY(x, y);
+        gameField.game(playerNum);
+
+        if (gameField.getPlayerNum() == 0 & gameField.playerIsShotReady() != 0)
+            whosMove.setText("Your move!");
+        if (gameField.getPlayerNum() == 1 & gameField.playerIsShotReady() == 0)
+            whosMove.setText("Opponent's move!");
+
+        if (gameField.getPlayerNum() == 1 & gameField.playerIsShotReady() != 0)
+            whosMove.setText("Your move!");
+        if (gameField.getPlayerNum() == 0 & gameField.playerIsShotReady() == 0)
+            whosMove.setText("Opponent's move");
     }
 }
