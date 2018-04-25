@@ -47,19 +47,6 @@ public class CorbaClient {
             // Запуск ORB в отдельном потоке управления для прослушивания ходов
             ORBThread ornThr = new ORBThread(orb);
             ornThr.start();
-
-//            serverRef.sendMove();
-
-            // здесь логика игры
-
-//            String name = "ServerLogic";
-//            ServerLogic stub = ServerLogicHelper.narrow(ncRef.resolve_str(name));
-//            MainForm mainForm = new MainForm();
-//            System.out.println("123");
-//            CorbaServer.registerClient(new ClientHandler(stub));
-//            new ORBThread(stub, mainForm).start();
-
-
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
             e.printStackTrace();
@@ -68,8 +55,4 @@ public class CorbaClient {
 
     public static ClientLogic getRef() { return ref; }
     public static ServerLogic getServerRef() { return serverRef; }
-
-//    public static ServerLogic getStub() {
-//        return stub;
-//    }
 }
