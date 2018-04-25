@@ -1,0 +1,12 @@
+module connect6 {
+    interface ClientLogic {
+        void sendMove(in string move);
+        void receiveMove(in string move);
+    };
+
+    interface ServerLogic {
+        void registerClient(in ClientLogic client);
+        void sendMove(in ClientLogic client, in string move);
+        void receiveMove(in string move);
+    };
+};

@@ -1,3 +1,1 @@
 Connect6
-
-sockets
