@@ -1,3 +1,4 @@
-Connect6
+Connect6 - game
 
-sockets
+*corba
+*sockets
